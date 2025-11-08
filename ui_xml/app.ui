@@ -280,7 +280,7 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
+             <y>-457</y>
              <width>859</width>
              <height>1337</height>
             </rect>
@@ -343,6 +343,15 @@
                </item>
                <item>
                 <widget class="QTableWidget" name="tableWidget_gbox_network">
+                 <property name="contextMenuPolicy">
+                  <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+                 </property>
+                 <property name="selectionMode">
+                  <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+                 </property>
                  <attribute name="verticalHeaderVisible">
                   <bool>false</bool>
                  </attribute>
@@ -567,6 +576,15 @@
               <layout class="QVBoxLayout" name="verticalLayout_7">
                <item>
                 <widget class="QTableWidget" name="tableWidget_gbox_screen">
+                 <property name="contextMenuPolicy">
+                  <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+                 </property>
+                 <property name="selectionMode">
+                  <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+                 </property>
                  <attribute name="verticalHeaderVisible">
                   <bool>false</bool>
                  </attribute>
@@ -582,12 +600,27 @@
                  </column>
                  <column>
                   <property name="text">
+                   <string>Name</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
                    <string>Active</string>
                   </property>
                  </column>
                  <column>
                   <property name="text">
                    <string>Geometry</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Points</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>DPI</string>
                   </property>
                  </column>
                  <column>

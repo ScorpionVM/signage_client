@@ -2,7 +2,7 @@
     "network": {
         "profiles": [
             {
-                "id": "8b61791c-f372-4e21-a832-2fa3f431a467",
+                "id": "6994427a-1ae4-4fdd-b01c-ad4c0b40b422",
                 "name": "Local Host",
                 "host": "http://127.0.0.1:8080",
                 "priority": 0
@@ -10,10 +10,47 @@
         ],
         "config": {
             "retries": 2,
-            "timeout": 30
+            "timeout": 60
         }
     },
-    "screen": [],
+    "screen": [
+        {
+            "id": "7bb3b390-1cf9-4c23-abb7-2c3fdc8cc8bb",
+            "pos": 0,
+            "name": "HDMI-1-0",
+            "active": true,
+            "geometry": [
+                1920,
+                1080
+            ],
+            "point": [
+                0,
+                0
+            ],
+            "dpi": "96.000",
+            "exists": true,
+            "profile": null,
+            "in_use": true
+        },
+        {
+            "id": "7c1cd4af-620a-428b-b110-24aed99355a5",
+            "pos": 1,
+            "name": "eDP-1",
+            "active": true,
+            "geometry": [
+                1920,
+                1080
+            ],
+            "point": [
+                1920,
+                0
+            ],
+            "dpi": "96.000",
+            "exists": true,
+            "profile": null,
+            "in_use": true
+        }
+    ],
     "cache": {
         "image": [],
         "video": []

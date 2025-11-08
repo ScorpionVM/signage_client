@@ -16,12 +16,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QGroupBox,
-    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
-    QMainWindow, QMenuBar, QPushButton, QScrollArea,
-    QSizePolicy, QSpacerItem, QSpinBox, QStackedWidget,
-    QStatusBar, QTableWidget, QTableWidgetItem, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFrame, QGridLayout,
+    QGroupBox, QHBoxLayout, QHeaderView, QLabel,
+    QLineEdit, QMainWindow, QMenuBar, QPushButton,
+    QScrollArea, QSizePolicy, QSpacerItem, QSpinBox,
+    QStackedWidget, QStatusBar, QTableWidget, QTableWidgetItem,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -166,7 +166,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 859, 1337))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, -457, 859, 1337))
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.groupBox = QGroupBox(self.scrollAreaWidgetContents)
@@ -221,6 +221,9 @@ class Ui_MainWindow(object):
         __qtablewidgetitem3 = QTableWidgetItem()
         self.tableWidget_gbox_network.setHorizontalHeaderItem(3, __qtablewidgetitem3)
         self.tableWidget_gbox_network.setObjectName(u"tableWidget_gbox_network")
+        self.tableWidget_gbox_network.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.tableWidget_gbox_network.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.tableWidget_gbox_network.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.tableWidget_gbox_network.verticalHeader().setVisible(False)
 
         self.verticalLayout_6.addWidget(self.tableWidget_gbox_network)
@@ -328,8 +331,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_7 = QVBoxLayout(self.groupBox_2)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.tableWidget_gbox_screen = QTableWidget(self.groupBox_2)
-        if (self.tableWidget_gbox_screen.columnCount() < 6):
-            self.tableWidget_gbox_screen.setColumnCount(6)
+        if (self.tableWidget_gbox_screen.columnCount() < 9):
+            self.tableWidget_gbox_screen.setColumnCount(9)
         __qtablewidgetitem4 = QTableWidgetItem()
         self.tableWidget_gbox_screen.setHorizontalHeaderItem(0, __qtablewidgetitem4)
         __qtablewidgetitem5 = QTableWidgetItem()
@@ -342,7 +345,16 @@ class Ui_MainWindow(object):
         self.tableWidget_gbox_screen.setHorizontalHeaderItem(4, __qtablewidgetitem8)
         __qtablewidgetitem9 = QTableWidgetItem()
         self.tableWidget_gbox_screen.setHorizontalHeaderItem(5, __qtablewidgetitem9)
+        __qtablewidgetitem10 = QTableWidgetItem()
+        self.tableWidget_gbox_screen.setHorizontalHeaderItem(6, __qtablewidgetitem10)
+        __qtablewidgetitem11 = QTableWidgetItem()
+        self.tableWidget_gbox_screen.setHorizontalHeaderItem(7, __qtablewidgetitem11)
+        __qtablewidgetitem12 = QTableWidgetItem()
+        self.tableWidget_gbox_screen.setHorizontalHeaderItem(8, __qtablewidgetitem12)
         self.tableWidget_gbox_screen.setObjectName(u"tableWidget_gbox_screen")
+        self.tableWidget_gbox_screen.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.tableWidget_gbox_screen.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.tableWidget_gbox_screen.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.tableWidget_gbox_screen.verticalHeader().setVisible(False)
 
         self.verticalLayout_7.addWidget(self.tableWidget_gbox_screen)
@@ -654,13 +666,19 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem5 = self.tableWidget_gbox_screen.horizontalHeaderItem(1)
         ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"Pos", None));
         ___qtablewidgetitem6 = self.tableWidget_gbox_screen.horizontalHeaderItem(2)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"Active", None));
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"Name", None));
         ___qtablewidgetitem7 = self.tableWidget_gbox_screen.horizontalHeaderItem(3)
-        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"Geometry", None));
+        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"Active", None));
         ___qtablewidgetitem8 = self.tableWidget_gbox_screen.horizontalHeaderItem(4)
-        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"Profile", None));
+        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"Geometry", None));
         ___qtablewidgetitem9 = self.tableWidget_gbox_screen.horizontalHeaderItem(5)
-        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"In Use", None));
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"Points", None));
+        ___qtablewidgetitem10 = self.tableWidget_gbox_screen.horizontalHeaderItem(6)
+        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"DPI", None));
+        ___qtablewidgetitem11 = self.tableWidget_gbox_screen.horizontalHeaderItem(7)
+        ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"Profile", None));
+        ___qtablewidgetitem12 = self.tableWidget_gbox_screen.horizontalHeaderItem(8)
+        ___qtablewidgetitem12.setText(QCoreApplication.translate("MainWindow", u"In Use", None));
         self.label_22.setText(QCoreApplication.translate("MainWindow", u"(i) All active screens and profiles that are in use are displayed here.", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Cache", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Files:", None))
