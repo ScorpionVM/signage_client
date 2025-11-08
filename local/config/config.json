@@ -1,0 +1,21 @@
+{
+    "network": {
+        "profiles": [
+            {
+                "id": "8b61791c-f372-4e21-a832-2fa3f431a467",
+                "name": "Local Host",
+                "host": "http://127.0.0.1:8080",
+                "priority": 0
+            }
+        ],
+        "config": {
+            "retries": 2,
+            "timeout": 30
+        }
+    },
+    "screen": [],
+    "cache": {
+        "image": [],
+        "video": []
+    }
+}

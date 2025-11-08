@@ -1,0 +1,26 @@
+{
+    "network": {
+        "profiles": [
+            {
+                "profile": "Localhost",
+                "ip": "localhost",
+                "port": "8080",
+                "priority": 0
+            }
+        ],
+        "config": {
+            "retries": 2,
+            "timeout": 30
+        }
+    },
+    "screen": {
+        "screens": 2,
+        "displays": [
+            {
+                "id": "89789432-432423-53454-34324",
+                "resolution": "1920x1080",
+                "active": true
+            }
+        ]
+    }
+}
