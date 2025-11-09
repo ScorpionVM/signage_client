@@ -166,9 +166,37 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, -457, 859, 1337))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 859, 1446))
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.groupBox_4 = QGroupBox(self.scrollAreaWidgetContents)
+        self.groupBox_4.setObjectName(u"groupBox_4")
+        self.verticalLayout_9 = QVBoxLayout(self.groupBox_4)
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.horizontalLayout_10 = QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.label_27 = QLabel(self.groupBox_4)
+        self.label_27.setObjectName(u"label_27")
+
+        self.horizontalLayout_10.addWidget(self.label_27)
+
+        self.lineEdit_gbox_app_location = QLineEdit(self.groupBox_4)
+        self.lineEdit_gbox_app_location.setObjectName(u"lineEdit_gbox_app_location")
+
+        self.horizontalLayout_10.addWidget(self.lineEdit_gbox_app_location)
+
+        self.pushButton_gbox_app_toggle = QPushButton(self.groupBox_4)
+        self.pushButton_gbox_app_toggle.setObjectName(u"pushButton_gbox_app_toggle")
+        self.pushButton_gbox_app_toggle.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+
+        self.horizontalLayout_10.addWidget(self.pushButton_gbox_app_toggle)
+
+
+        self.verticalLayout_9.addLayout(self.horizontalLayout_10)
+
+
+        self.verticalLayout_5.addWidget(self.groupBox_4)
+
         self.groupBox = QGroupBox(self.scrollAreaWidgetContents)
         self.groupBox.setObjectName(u"groupBox")
         self.verticalLayout_6 = QVBoxLayout(self.groupBox)
@@ -247,12 +275,14 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_6.addItem(self.verticalSpacer_9)
 
-        self.gridLayout_4 = QGridLayout()
-        self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.label_24 = QLabel(self.groupBox)
-        self.label_24.setObjectName(u"label_24")
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.pushButton_gbox_network_config_toggle = QPushButton(self.groupBox)
+        self.pushButton_gbox_network_config_toggle.setObjectName(u"pushButton_gbox_network_config_toggle")
+        self.pushButton_gbox_network_config_toggle.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.pushButton_gbox_network_config_toggle.setFlat(False)
 
-        self.gridLayout_4.addWidget(self.label_24, 1, 2, 1, 1)
+        self.horizontalLayout_6.addWidget(self.pushButton_gbox_network_config_toggle)
 
         self.label_23 = QLabel(self.groupBox)
         self.label_23.setObjectName(u"label_23")
@@ -261,7 +291,21 @@ class Ui_MainWindow(object):
         font4.setItalic(True)
         self.label_23.setFont(font4)
 
-        self.gridLayout_4.addWidget(self.label_23, 0, 0, 1, 1)
+        self.horizontalLayout_6.addWidget(self.label_23)
+
+        self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_6.addItem(self.horizontalSpacer_9)
+
+
+        self.verticalLayout_6.addLayout(self.horizontalLayout_6)
+
+        self.gridLayout_4 = QGridLayout()
+        self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.label_24 = QLabel(self.groupBox)
+        self.label_24.setObjectName(u"label_24")
+
+        self.gridLayout_4.addWidget(self.label_24, 1, 2, 1, 1)
 
         self.spinBox_gbox_network_config_reconnect_retries = QSpinBox(self.groupBox)
         self.spinBox_gbox_network_config_reconnect_retries.setObjectName(u"spinBox_gbox_network_config_reconnect_retries")
@@ -331,8 +375,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_7 = QVBoxLayout(self.groupBox_2)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.tableWidget_gbox_screen = QTableWidget(self.groupBox_2)
-        if (self.tableWidget_gbox_screen.columnCount() < 9):
-            self.tableWidget_gbox_screen.setColumnCount(9)
+        if (self.tableWidget_gbox_screen.columnCount() < 8):
+            self.tableWidget_gbox_screen.setColumnCount(8)
         __qtablewidgetitem4 = QTableWidgetItem()
         self.tableWidget_gbox_screen.setHorizontalHeaderItem(0, __qtablewidgetitem4)
         __qtablewidgetitem5 = QTableWidgetItem()
@@ -349,8 +393,6 @@ class Ui_MainWindow(object):
         self.tableWidget_gbox_screen.setHorizontalHeaderItem(6, __qtablewidgetitem10)
         __qtablewidgetitem11 = QTableWidgetItem()
         self.tableWidget_gbox_screen.setHorizontalHeaderItem(7, __qtablewidgetitem11)
-        __qtablewidgetitem12 = QTableWidgetItem()
-        self.tableWidget_gbox_screen.setHorizontalHeaderItem(8, __qtablewidgetitem12)
         self.tableWidget_gbox_screen.setObjectName(u"tableWidget_gbox_screen")
         self.tableWidget_gbox_screen.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.tableWidget_gbox_screen.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
@@ -372,32 +414,63 @@ class Ui_MainWindow(object):
         self.groupBox_3.setObjectName(u"groupBox_3")
         self.verticalLayout_8 = QVBoxLayout(self.groupBox_3)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.pushButton_gbox_cache_image_toggle = QPushButton(self.groupBox_3)
+        self.pushButton_gbox_cache_image_toggle.setObjectName(u"pushButton_gbox_cache_image_toggle")
+        self.pushButton_gbox_cache_image_toggle.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+
+        self.horizontalLayout_8.addWidget(self.pushButton_gbox_cache_image_toggle)
+
+        self.label_7 = QLabel(self.groupBox_3)
+        self.label_7.setObjectName(u"label_7")
+        self.label_7.setFont(font4)
+
+        self.horizontalLayout_8.addWidget(self.label_7)
+
+        self.horizontalSpacer_10 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_8.addItem(self.horizontalSpacer_10)
+
+
+        self.verticalLayout_8.addLayout(self.horizontalLayout_8)
+
         self.gridLayout_2 = QGridLayout()
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.label_8 = QLabel(self.groupBox_3)
-        self.label_8.setObjectName(u"label_8")
+        self.label_10 = QLabel(self.groupBox_3)
+        self.label_10.setObjectName(u"label_10")
 
-        self.gridLayout_2.addWidget(self.label_8, 1, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.label_10, 1, 3, 1, 1)
+
+        self.label_gbox_cache_image_color_files_count = QLabel(self.groupBox_3)
+        self.label_gbox_cache_image_color_files_count.setObjectName(u"label_gbox_cache_image_color_files_count")
+        self.label_gbox_cache_image_color_files_count.setMinimumSize(QSize(25, 25))
+        self.label_gbox_cache_image_color_files_count.setMaximumSize(QSize(25, 25))
+        self.label_gbox_cache_image_color_files_count.setFrameShape(QFrame.Shape.Box)
+
+        self.gridLayout_2.addWidget(self.label_gbox_cache_image_color_files_count, 1, 2, 1, 1)
 
         self.label_9 = QLabel(self.groupBox_3)
         self.label_9.setObjectName(u"label_9")
 
         self.gridLayout_2.addWidget(self.label_9, 2, 0, 1, 1)
 
-        self.label_11 = QLabel(self.groupBox_3)
-        self.label_11.setObjectName(u"label_11")
-
-        self.gridLayout_2.addWidget(self.label_11, 2, 3, 1, 1)
-
         self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.gridLayout_2.addItem(self.horizontalSpacer_4, 1, 4, 1, 1)
 
-        self.label_7 = QLabel(self.groupBox_3)
-        self.label_7.setObjectName(u"label_7")
-        self.label_7.setFont(font4)
+        self.label_8 = QLabel(self.groupBox_3)
+        self.label_8.setObjectName(u"label_8")
 
-        self.gridLayout_2.addWidget(self.label_7, 0, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.label_8, 1, 0, 1, 1)
+
+        self.label_gbox_cache_image_color_max_size = QLabel(self.groupBox_3)
+        self.label_gbox_cache_image_color_max_size.setObjectName(u"label_gbox_cache_image_color_max_size")
+        self.label_gbox_cache_image_color_max_size.setMinimumSize(QSize(25, 25))
+        self.label_gbox_cache_image_color_max_size.setMaximumSize(QSize(25, 25))
+        self.label_gbox_cache_image_color_max_size.setFrameShape(QFrame.Shape.Box)
+
+        self.gridLayout_2.addWidget(self.label_gbox_cache_image_color_max_size, 2, 2, 1, 1)
 
         self.spinBox_gbox_cache_image_files_count = QSpinBox(self.groupBox_3)
         self.spinBox_gbox_cache_image_files_count.setObjectName(u"spinBox_gbox_cache_image_files_count")
@@ -413,20 +486,10 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addWidget(self.spinBox_gbox_cache_image_max_size, 2, 1, 1, 1)
 
-        self.label_10 = QLabel(self.groupBox_3)
-        self.label_10.setObjectName(u"label_10")
+        self.label_11 = QLabel(self.groupBox_3)
+        self.label_11.setObjectName(u"label_11")
 
-        self.gridLayout_2.addWidget(self.label_10, 1, 3, 1, 1)
-
-        self.label_27 = QLabel(self.groupBox_3)
-        self.label_27.setObjectName(u"label_27")
-
-        self.gridLayout_2.addWidget(self.label_27, 1, 2, 1, 1)
-
-        self.label_28 = QLabel(self.groupBox_3)
-        self.label_28.setObjectName(u"label_28")
-
-        self.gridLayout_2.addWidget(self.label_28, 2, 2, 1, 1)
+        self.gridLayout_2.addWidget(self.label_11, 2, 3, 1, 1)
 
 
         self.verticalLayout_8.addLayout(self.gridLayout_2)
@@ -478,6 +541,27 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addItem(self.verticalSpacer_8)
 
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.pushButton_gbox_cache_video_toggle = QPushButton(self.groupBox_3)
+        self.pushButton_gbox_cache_video_toggle.setObjectName(u"pushButton_gbox_cache_video_toggle")
+        self.pushButton_gbox_cache_video_toggle.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+
+        self.horizontalLayout_9.addWidget(self.pushButton_gbox_cache_video_toggle)
+
+        self.label_13 = QLabel(self.groupBox_3)
+        self.label_13.setObjectName(u"label_13")
+        self.label_13.setFont(font4)
+
+        self.horizontalLayout_9.addWidget(self.label_13)
+
+        self.horizontalSpacer_11 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_9.addItem(self.horizontalSpacer_11)
+
+
+        self.verticalLayout_8.addLayout(self.horizontalLayout_9)
+
         self.gridLayout_3 = QGridLayout()
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.label_15 = QLabel(self.groupBox_3)
@@ -504,12 +588,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.label_16, 2, 0, 1, 1)
 
-        self.label_13 = QLabel(self.groupBox_3)
-        self.label_13.setObjectName(u"label_13")
-        self.label_13.setFont(font4)
-
-        self.gridLayout_3.addWidget(self.label_13, 0, 0, 1, 1)
-
         self.spinBox_gbox_cache_video_max_size = QSpinBox(self.groupBox_3)
         self.spinBox_gbox_cache_video_max_size.setObjectName(u"spinBox_gbox_cache_video_max_size")
         self.spinBox_gbox_cache_video_max_size.setMinimum(100)
@@ -524,15 +602,21 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.spinBox_gbox_cache_video_files_count, 1, 1, 1, 1)
 
-        self.label_29 = QLabel(self.groupBox_3)
-        self.label_29.setObjectName(u"label_29")
+        self.label_gbox_cache_video_color_files_count = QLabel(self.groupBox_3)
+        self.label_gbox_cache_video_color_files_count.setObjectName(u"label_gbox_cache_video_color_files_count")
+        self.label_gbox_cache_video_color_files_count.setMinimumSize(QSize(25, 25))
+        self.label_gbox_cache_video_color_files_count.setMaximumSize(QSize(25, 25))
+        self.label_gbox_cache_video_color_files_count.setFrameShape(QFrame.Shape.Box)
 
-        self.gridLayout_3.addWidget(self.label_29, 1, 2, 1, 1)
+        self.gridLayout_3.addWidget(self.label_gbox_cache_video_color_files_count, 1, 2, 1, 1)
 
-        self.label_30 = QLabel(self.groupBox_3)
-        self.label_30.setObjectName(u"label_30")
+        self.label_gbox_cache_video_color_max_size = QLabel(self.groupBox_3)
+        self.label_gbox_cache_video_color_max_size.setObjectName(u"label_gbox_cache_video_color_max_size")
+        self.label_gbox_cache_video_color_max_size.setMinimumSize(QSize(25, 25))
+        self.label_gbox_cache_video_color_max_size.setMaximumSize(QSize(25, 25))
+        self.label_gbox_cache_video_color_max_size.setFrameShape(QFrame.Shape.Box)
 
-        self.gridLayout_3.addWidget(self.label_30, 2, 2, 1, 1)
+        self.gridLayout_3.addWidget(self.label_gbox_cache_video_color_max_size, 2, 2, 1, 1)
 
 
         self.verticalLayout_8.addLayout(self.gridLayout_3)
@@ -635,6 +719,10 @@ class Ui_MainWindow(object):
         self.pushButton_menu_close_app.setText(QCoreApplication.translate("MainWindow", u"Close App", None))
         self.pushButton_settings_close.setText(QCoreApplication.translate("MainWindow", u"Close", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"App Config", None))
+        self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"App", None))
+        self.label_27.setText(QCoreApplication.translate("MainWindow", u"Location:", None))
+        self.lineEdit_gbox_app_location.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Store 1 Wall", None))
+        self.pushButton_gbox_app_toggle.setText("")
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Network", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Profile:", None))
         self.lineEdit_gbox_network_profile.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Local Host", None))
@@ -651,8 +739,9 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem3 = self.tableWidget_gbox_network.horizontalHeaderItem(3)
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Priority", None));
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"(i) App will try to reconnect to another profile in priority order", None))
-        self.label_24.setText(QCoreApplication.translate("MainWindow", u"(maximum number of reconnection attempts min: 2 & max: 5)", None))
+        self.pushButton_gbox_network_config_toggle.setText("")
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"Config", None))
+        self.label_24.setText(QCoreApplication.translate("MainWindow", u"(maximum number of reconnection attempts min: 2 & max: 5)", None))
         self.spinBox_gbox_network_config_reconnect_retries.setSuffix(QCoreApplication.translate("MainWindow", u" x", None))
         self.label_25.setText(QCoreApplication.translate("MainWindow", u"(timeout for connecting to the host min: 30 sec & max: 2 min)", None))
         self.spinBox_gbox_network_config_timeout.setSuffix(QCoreApplication.translate("MainWindow", u" sec", None))
@@ -677,32 +766,32 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"DPI", None));
         ___qtablewidgetitem11 = self.tableWidget_gbox_screen.horizontalHeaderItem(7)
         ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"Profile", None));
-        ___qtablewidgetitem12 = self.tableWidget_gbox_screen.horizontalHeaderItem(8)
-        ___qtablewidgetitem12.setText(QCoreApplication.translate("MainWindow", u"In Use", None));
-        self.label_22.setText(QCoreApplication.translate("MainWindow", u"(i) All active screens and profiles that are in use are displayed here.", None))
+        self.label_22.setText(QCoreApplication.translate("MainWindow", u"(i) All active screens and profiles are displayed here.", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Cache", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Files:", None))
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Max Size:", None))
-        self.label_11.setText(QCoreApplication.translate("MainWindow", u"(total size min: 50MB & max: 1GB)", None))
+        self.pushButton_gbox_cache_image_toggle.setText("")
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Images", None))
+        self.label_10.setText(QCoreApplication.translate("MainWindow", u"(file counts min: 50 & max: 250)", None))
+        self.label_gbox_cache_image_color_files_count.setText("")
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Max Size:", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Files:", None))
+        self.label_gbox_cache_image_color_max_size.setText("")
         self.spinBox_gbox_cache_image_files_count.setSuffix(QCoreApplication.translate("MainWindow", u" x", None))
         self.spinBox_gbox_cache_image_max_size.setSuffix(QCoreApplication.translate("MainWindow", u" MB", None))
-        self.label_10.setText(QCoreApplication.translate("MainWindow", u"(file counts min: 50 & max: 250)", None))
-        self.label_27.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_28.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"(total size min: 50MB & max: 1GB)", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"(i) The image cache is a maximum of 250 files or a maximum of 1 GB of disk space used.", None))
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"Cache:", None))
         self.label_gbox_cache_image_cache_info.setText(QCoreApplication.translate("MainWindow", u"0 files with a total size of 0 MB  ", None))
         self.pushButton_gbox_cache_image_clear_cache.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
+        self.pushButton_gbox_cache_video_toggle.setText("")
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Videos", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"(file counts min: 25 & max: 100)", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"(total size min: 100MB & max: 2GB)", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Files:", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Max Size:", None))
-        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Videos", None))
         self.spinBox_gbox_cache_video_max_size.setSuffix(QCoreApplication.translate("MainWindow", u" MB", None))
         self.spinBox_gbox_cache_video_files_count.setSuffix(QCoreApplication.translate("MainWindow", u" x", None))
-        self.label_29.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_30.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_gbox_cache_video_color_files_count.setText("")
+        self.label_gbox_cache_video_color_max_size.setText("")
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"(i) The video cache is a maximum of 100 files or a maximum of 2 GB of disk space used.", None))
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"Cache:", None))
         self.label_gbox_cache_video_cache_info.setText(QCoreApplication.translate("MainWindow", u"0 files with a total size of 0 MB  ", None))

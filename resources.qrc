@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/icon-add.png</file>
+        <file>icons/icon-arrow-down.png</file>
+        <file>icons/icon-arrow-up.png</file>
+        <file>icons/icon-back.png</file>
+        <file>icons/icon-check.png</file>
+        <file>icons/icon-close.png</file>
+        <file>icons/icon-delete.png</file>
+        <file>icons/icon-gear.png</file>
+        <file>icons/icon-link.png</file>
+        <file>icons/icon-pen.png</file>
+        <file>icons/icon-toggle-off.png</file>
+        <file>icons/icon-toggle-on.png</file>
+    </qresource>
+</RCC>

@@ -1,8 +1,11 @@
 {
+    "app": {
+        "location": "Store Wall"
+    },
     "network": {
         "profiles": [
             {
-                "id": "6994427a-1ae4-4fdd-b01c-ad4c0b40b422",
+                "id": "4c4613f4-6b02-4374-8905-4b3a276f32a2",
                 "name": "Local Host",
                 "host": "http://127.0.0.1:8080",
                 "priority": 0
@@ -10,7 +13,7 @@
         ],
         "config": {
             "retries": 2,
-            "timeout": 60
+            "timeout": 45
         }
     },
     "screen": [
@@ -29,8 +32,7 @@
             ],
             "dpi": "96.000",
             "exists": true,
-            "profile": null,
-            "in_use": true
+            "profile": null
         },
         {
             "id": "7c1cd4af-620a-428b-b110-24aed99355a5",
@@ -47,12 +49,19 @@
             ],
             "dpi": "96.000",
             "exists": true,
-            "profile": null,
-            "in_use": true
+            "profile": null
         }
     ],
     "cache": {
-        "image": [],
-        "video": []
+        "image": {
+            "max-files": 250,
+            "max-size": 1024,
+            "files": []
+        },
+        "video": {
+            "max-files": 80,
+            "max-size": 2048,
+            "files": []
+        }
     }
 }

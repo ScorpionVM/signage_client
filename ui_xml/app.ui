@@ -280,12 +280,49 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-457</y>
+             <y>0</y>
              <width>859</width>
-             <height>1337</height>
+             <height>1446</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QGroupBox" name="groupBox_4">
+              <property name="title">
+               <string>App</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_10">
+                 <item>
+                  <widget class="QLabel" name="label_27">
+                   <property name="text">
+                    <string>Location:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit_gbox_app_location">
+                   <property name="placeholderText">
+                    <string>Store 1 Wall</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_gbox_app_toggle">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
             <item>
              <widget class="QGroupBox" name="groupBox">
               <property name="title">
@@ -413,15 +450,21 @@
                 </spacer>
                </item>
                <item>
-                <layout class="QGridLayout" name="gridLayout_4">
-                 <item row="1" column="2">
-                  <widget class="QLabel" name="label_24">
+                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                 <item>
+                  <widget class="QPushButton" name="pushButton_gbox_network_config_toggle">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
                    <property name="text">
-                    <string>(maximum number of reconnection attempts min: 2 &amp; max: 5)</string>
+                    <string/>
+                   </property>
+                   <property name="flat">
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="0">
+                 <item>
                   <widget class="QLabel" name="label_23">
                    <property name="font">
                     <font>
@@ -431,6 +474,30 @@
                    </property>
                    <property name="text">
                     <string>Config</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_9">
+                   <property name="orientation">
+                    <enum>Qt::Orientation::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QGridLayout" name="gridLayout_4">
+                 <item row="1" column="2">
+                  <widget class="QLabel" name="label_24">
+                   <property name="text">
+                    <string>(maximum number of reconnection attempts min: 2 &amp; max: 5)</string>
                    </property>
                   </widget>
                  </item>
@@ -628,11 +695,6 @@
                    <string>Profile</string>
                   </property>
                  </column>
-                 <column>
-                  <property name="text">
-                   <string>In Use</string>
-                  </property>
-                 </column>
                 </widget>
                </item>
                <item>
@@ -643,7 +705,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>(i) All active screens and profiles that are in use are displayed here.</string>
+                  <string>(i) All active screens and profiles are displayed here.</string>
                  </property>
                 </widget>
                </item>
@@ -657,11 +719,73 @@
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_8">
                <item>
-                <layout class="QGridLayout" name="gridLayout_2">
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="label_8">
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                 <item>
+                  <widget class="QPushButton" name="pushButton_gbox_cache_image_toggle">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
                    <property name="text">
-                    <string>Files:</string>
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_7">
+                   <property name="font">
+                    <font>
+                     <italic>true</italic>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Images</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_10">
+                   <property name="orientation">
+                    <enum>Qt::Orientation::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QGridLayout" name="gridLayout_2">
+                 <item row="1" column="3">
+                  <widget class="QLabel" name="label_10">
+                   <property name="text">
+                    <string>(file counts min: 50 &amp; max: 250)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QLabel" name="label_gbox_cache_image_color_files_count">
+                   <property name="minimumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::Box</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
                    </property>
                   </widget>
                  </item>
@@ -669,13 +793,6 @@
                   <widget class="QLabel" name="label_9">
                    <property name="text">
                     <string>Max Size:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="3">
-                  <widget class="QLabel" name="label_11">
-                   <property name="text">
-                    <string>(total size min: 50MB &amp; max: 1GB)</string>
                    </property>
                   </widget>
                  </item>
@@ -692,16 +809,32 @@
                    </property>
                   </spacer>
                  </item>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_7">
-                   <property name="font">
-                    <font>
-                     <italic>true</italic>
-                     <bold>true</bold>
-                    </font>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_8">
+                   <property name="text">
+                    <string>Files:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="QLabel" name="label_gbox_cache_image_color_max_size">
+                   <property name="minimumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::Box</enum>
                    </property>
                    <property name="text">
-                    <string>Images</string>
+                    <string/>
                    </property>
                   </widget>
                  </item>
@@ -731,24 +864,10 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="3">
-                  <widget class="QLabel" name="label_10">
+                 <item row="2" column="3">
+                  <widget class="QLabel" name="label_11">
                    <property name="text">
-                    <string>(file counts min: 50 &amp; max: 250)</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="2">
-                  <widget class="QLabel" name="label_27">
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="2">
-                  <widget class="QLabel" name="label_28">
-                   <property name="text">
-                    <string>TextLabel</string>
+                    <string>(total size min: 50MB &amp; max: 1GB)</string>
                    </property>
                   </widget>
                  </item>
@@ -853,6 +972,46 @@
                 </spacer>
                </item>
                <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_9">
+                 <item>
+                  <widget class="QPushButton" name="pushButton_gbox_cache_video_toggle">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_13">
+                   <property name="font">
+                    <font>
+                     <italic>true</italic>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Videos</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_11">
+                   <property name="orientation">
+                    <enum>Qt::Orientation::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
                 <layout class="QGridLayout" name="gridLayout_3">
                  <item row="1" column="3">
                   <widget class="QLabel" name="label_15">
@@ -895,19 +1054,6 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_13">
-                   <property name="font">
-                    <font>
-                     <italic>true</italic>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Videos</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="2" column="1">
                   <widget class="QSpinBox" name="spinBox_gbox_cache_video_max_size">
                    <property name="suffix">
@@ -935,16 +1081,46 @@
                   </widget>
                  </item>
                  <item row="1" column="2">
-                  <widget class="QLabel" name="label_29">
+                  <widget class="QLabel" name="label_gbox_cache_video_color_files_count">
+                   <property name="minimumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::Box</enum>
+                   </property>
                    <property name="text">
-                    <string>TextLabel</string>
+                    <string/>
                    </property>
                   </widget>
                  </item>
                  <item row="2" column="2">
-                  <widget class="QLabel" name="label_30">
+                  <widget class="QLabel" name="label_gbox_cache_video_color_max_size">
+                   <property name="minimumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::Box</enum>
+                   </property>
                    <property name="text">
-                    <string>TextLabel</string>
+                    <string/>
                    </property>
                   </widget>
                  </item>

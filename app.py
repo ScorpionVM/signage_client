@@ -3,19 +3,22 @@
 import json
 import os
 import sys
-import uuid
 import time
+import uuid
 
 import requests
-from PySide6.QtCore import (QEasingCurve, QPoint, QPropertyAnimation, QTimer,
+from PySide6.QtCore import (QEasingCurve, QPoint, QPropertyAnimation, QTimer, QSize,
                             QUrl, Slot)
-from PySide6.QtGui import QAction, QKeyEvent, Qt
+from PySide6.QtGui import QAction, QIcon, QKeyEvent, QPixmap, Qt
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (QApplication, QGraphicsOpacityEffect,
                                QHBoxLayout, QLabel, QMainWindow, QMenu,
-                               QTableWidgetItem, QVBoxLayout, QWidget)
+                               QSpinBox, QTableWidgetItem, QVBoxLayout,
+                               QWidget)
 
 from ui.ui_MainWindow import Ui_MainWindow
+
+import resources_rc
 
 is_frozen = getattr(sys, 'frozen', False)
 
@@ -144,8 +147,12 @@ class MainWindow(QMainWindow):
         # --- Settings ---
         self.ui.pushButton_settings_close.clicked.connect(self.clicked_pushButton_settings_close)
         
+        # --- Settings - App ---
+        self.ui.pushButton_gbox_app_toggle.clicked.connect(self.toggle_gbox_app)
+
         # --- Settings - Network ---
         self.ui.pushButton_gbox_network_add.clicked.connect(self.clicked_pushButton_gbox_network_add)
+        self.ui.pushButton_gbox_network_config_toggle.clicked.connect(self.toggle_gbox_network_config)
         self.ui.spinBox_gbox_network_config_reconnect_retries.valueChanged.connect(self.changed_spinBox_gbox_network_config_reconnect_retries)
         self.ui.spinBox_gbox_network_config_timeout.valueChanged.connect(self.changed_spinBox_gbox_network_config_timeout)
         self.ui.tableWidget_gbox_network.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -153,15 +160,26 @@ class MainWindow(QMainWindow):
 
         # --- Settings - Screen ---
         self.ui.tableWidget_gbox_screen.setContextMenuPolicy(Qt.CustomContextMenu)
-        # self.ui.tableWidget_gbox_screen.customContextMenuRequested.connect(self.customContextMenu_gbox_screen)
+        self.ui.tableWidget_gbox_screen.customContextMenuRequested.connect(self.customContextMenu_gbox_screen)
 
         # --- Settings - Cache ---
+        self.ui.pushButton_gbox_cache_image_toggle.clicked.connect(self.toggle_gbox_cache_image_toggle)
+        self.ui.spinBox_gbox_cache_image_files_count.valueChanged.connect(self.changed_spinBox_gbox_cache_image_files_count)
+        self.ui.spinBox_gbox_cache_image_max_size.valueChanged.connect(self.changed_spinBox_gbox_cache_image_max_size)
+        self.ui.pushButton_gbox_cache_image_clear_cache.clicked.connect(self.clicked_pushButton_gbox_cache_image_clear_cache)
+
+        self.ui.pushButton_gbox_cache_video_toggle.clicked.connect(self.toggle_gbox_cache_video_toggle)
+        self.ui.spinBox_gbox_cache_video_files_count.valueChanged.connect(self.changed_spinBox_gbox_cache_video_files_count)
+        self.ui.spinBox_gbox_cache_video_max_size.valueChanged.connect(self.changed_spinBox_gbox_cache_video_max_size)
+        self.ui.pushButton_gbox_cache_video_clear_cache.clicked.connect(self.clicked_pushButton_gbox_cache_video_clear_cache)
 
         # Vars
         self.config:dict = None
 
         # Load
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_webview)
+
+        QTimer.singleShot(1000, self.load_ui_icons_async)
 
         self.load_config()
         self.connect_page(firstrun=True)
@@ -257,6 +275,22 @@ class MainWindow(QMainWindow):
             self.ui.stackedWidget.setCurrentWidget(self.ui.page_menu)
         pass
 
+    def load_ui_icons_async(self):
+        # --- PAGE - MENU ---
+        self.ui.pushButton_menu_back.setIcon(QIcon(":/icons/icon-back.png"))
+        self.ui.pushButton_menu_back.setIconSize(QSize(20, 20))
+        
+        self.ui.pushButton_menu_settings.setIcon(QIcon(":/icons/icon-gear.png"))
+        self.ui.pushButton_menu_settings.setIconSize(QSize(20, 20))
+
+        self.ui.pushButton_menu_close_app.setIcon(QIcon(":/icons/icon-close.png"))
+        self.ui.pushButton_menu_close_app.setIconSize(QSize(20, 20))
+
+        # --- PAGE - SETTINGS ---
+        self.ui.pushButton_settings_close.setIcon(QIcon(":/icons/icon-close.png"))
+        self.ui.pushButton_gbox_network_add.setIcon(QIcon(":/icons/icon-add.png"))
+        pass
+
     """ PAGE - WebView """
 
 
@@ -280,13 +314,53 @@ class MainWindow(QMainWindow):
     def populate_page_settings(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_settings)
 
+        self.populate_page_settings_gbox_app()
         self.populate_page_settings_gbox_network()
         self.populate_page_settings_gbox_screen()
+        self.populate_page_settings_gbox_cache()
         pass
 
     @Slot()
     def clicked_pushButton_settings_close(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_webview)
+        pass
+
+    """ PAGE - Settings - GBOX [App] """
+    def populate_page_settings_gbox_app(self):
+        # LOAD
+        config_app = self.config['app']
+
+        self.ui.lineEdit_gbox_app_location.setText(config_app['location'])
+
+        self.toggle_gbox_app(reset=True)
+        pass
+
+    @Slot()
+    def toggle_gbox_app(self, reset=False):
+        if not hasattr(self, "toggle_state_gbox_app"):
+            self.toggle_state_gbox_app = True
+
+        if reset:
+            self.toggle_state_gbox_app = True
+        
+        icon = QIcon(":/icons/icon-pen.png") if self.toggle_state_gbox_app else QIcon(":/icons/icon-check.png")
+        
+        if self.toggle_state_gbox_app and not reset:
+            value = self.ui.lineEdit_gbox_app_location.text().strip()
+            
+            if not value:
+                self.show_toast(Toast.Error, "Please enter location!")
+                return
+            
+            elif value != self.config['app']['location']:
+                self.config['app']['location'] = value
+                self.show_toast(Toast.Success, "Location updated!")
+                self.save_config()
+        
+        self.toggle_state_gbox_app = not self.toggle_state_gbox_app
+
+        self.ui.pushButton_gbox_app_toggle.setIcon(icon)
+        self.ui.lineEdit_gbox_app_location.setEnabled(self.toggle_state_gbox_app)
         pass
 
     """ PAGE - Settings - GBOX [Network] """
@@ -325,6 +399,26 @@ class MainWindow(QMainWindow):
 
         self.changed_spinBox_gbox_network_config_reconnect_retries()
         self.changed_spinBox_gbox_network_config_timeout()
+
+        self.toggle_gbox_network_config(reset=True)
+        pass
+    
+    @Slot()
+    def toggle_gbox_network_config(self, reset=False):
+        if not hasattr(self, "toggle_state_network_config"):
+            self.toggle_state_network_config = True
+
+        if reset:
+            self.toggle_state_network_config = True
+        
+        icon = QIcon(":/icons/icon-pen.png") if self.toggle_state_network_config else QIcon(":/icons/icon-check.png")
+        
+        self.toggle_state_network_config = not self.toggle_state_network_config
+
+        self.ui.pushButton_gbox_network_config_toggle.setIcon(icon)
+
+        self.ui.spinBox_gbox_network_config_reconnect_retries.setEnabled(self.toggle_state_network_config)
+        self.ui.spinBox_gbox_network_config_timeout.setEnabled(self.toggle_state_network_config)
         pass
 
     @Slot()
@@ -359,25 +453,21 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def changed_spinBox_gbox_network_config_reconnect_retries(self, value:int=None):
-        value = self.ui.spinBox_gbox_network_config_reconnect_retries.value()
-        xmin = self.ui.spinBox_gbox_network_config_reconnect_retries.minimum()
-        xmax = self.ui.spinBox_gbox_network_config_reconnect_retries.maximum()
-
-        hexcol = self.gradient_color(value, xmin, xmax)
-        self.ui.label_gbox_network_color_reconnect_retries.setStyleSheet("QLabel { background-color: %s; }" % hexcol)
-
+        value = self.get_value_spinbox_and_color(
+            self.ui.spinBox_gbox_network_config_reconnect_retries,
+            self.ui.label_gbox_network_color_reconnect_retries
+        )
+        
         self.config['network']['config']['retries'] = value
         self.save_config()
         pass
 
     @Slot()
     def changed_spinBox_gbox_network_config_timeout(self, value:int=None):
-        value = self.ui.spinBox_gbox_network_config_timeout.value()
-        xmin = self.ui.spinBox_gbox_network_config_timeout.minimum()
-        xmax = self.ui.spinBox_gbox_network_config_timeout.maximum()
-
-        hexcol = self.gradient_color(value, xmin, xmax)
-        self.ui.label_gbox_network_color_timeout.setStyleSheet("QLabel { background-color: %s; }" % hexcol)
+        value = self.get_value_spinbox_and_color(
+            self.ui.spinBox_gbox_network_config_timeout,
+            self.ui.label_gbox_network_color_timeout
+        )
 
         self.config['network']['config']['timeout'] = value
         self.save_config()
@@ -402,6 +492,8 @@ class MainWindow(QMainWindow):
             self.config['network']['profiles'] = profiles
             self.save_config()
             self.populate_page_settings_gbox_network()
+
+            self.show_toast(Toast.Success, "Priority increased!")
             pass
 
         def control_dec_priority(item:QTableWidgetItem):
@@ -421,6 +513,8 @@ class MainWindow(QMainWindow):
             self.config['network']['profiles'] = profiles
             self.save_config()
             self.populate_page_settings_gbox_network()
+
+            self.show_toast(Toast.Success, "Priority decreased!")
             pass
 
         def control_connect(item:QTableWidgetItem):
@@ -452,7 +546,7 @@ class MainWindow(QMainWindow):
             self.save_config()
             self.populate_page_settings_gbox_network()
 
-            self.show_toast(Toast.Success, "Host deleted!")
+            self.show_toast(Toast.Success, "Profile deleted!")
             pass
 
         global_pos = self.ui.tableWidget_gbox_network.viewport().mapToGlobal(pos)
@@ -463,10 +557,10 @@ class MainWindow(QMainWindow):
         
         menu = QMenu(self)
 
-        action_increase_priority = QAction("Priority (+)", self)
-        action_decrease_priority = QAction("Priority (-)", self)
-        action_connect = QAction("Connect", self)
-        action_delete = QAction("Delete", self)
+        action_increase_priority = QAction("Priority (+)", self, icon=QIcon(":/icons/icon-arrow-up.png"))
+        action_decrease_priority = QAction("Priority (-)", self, icon=QIcon(":/icons/icon-arrow-down.png"))
+        action_connect = QAction("Connect", self, icon=QIcon(":/icons/icon-link.png"))
+        action_delete = QAction("Delete", self, icon=QIcon(":/icons/icon-delete.png"))
 
         menu.addAction(action_increase_priority)
         menu.addAction(action_decrease_priority)
@@ -503,8 +597,7 @@ class MainWindow(QMainWindow):
                 "point": (geometry.x(), geometry.y()),
                 "dpi": f"{scr.logicalDotsPerInch():.3f}",
                 "exists": True,
-                "profile": None,
-                "in_use": True
+                "profile": None
             }
 
             extracted.append(screen_object)
@@ -535,7 +628,7 @@ class MainWindow(QMainWindow):
         for i, scr in enumerate(config_screens):
             xrow = [
                 scr['id'], scr['pos'], scr['name'], scr['active'], "{}x{}".format(*scr['geometry']), 
-                "x: {} & y: {}".format(*scr['point']), scr['dpi'], scr['profile'], scr['in_use']
+                "XY: ({}, {})".format(*scr['point']), scr['dpi'], scr['profile']
             ]
 
             for j, val in enumerate(xrow):
@@ -547,21 +640,203 @@ class MainWindow(QMainWindow):
         self.ui.tableWidget_gbox_screen.resizeColumnsToContents()
         pass
 
+    @Slot()
+    def customContextMenu_gbox_screen(self, pos: QPoint):
+        def control_toggle_active_status(item:QTableWidgetItem):
+            screen_id = self.ui.tableWidget_gbox_screen.item(item.row(), 0).data(Qt.DisplayRole)
+
+            current_status = False
+            for scr in screens:
+                if scr['id'] == screen_id:
+                    current_status = scr['active']
+
+            active_screens = [x for x in screens if x['active'] and x['id'] != screen_id]
+        
+            if not active_screens and current_status:
+                self.show_toast(Toast.Error, "The screen cannot be disabled. At least one screen must be active.")
+                return
+            
+            for i, scr in enumerate(self.config['screen']):
+                if scr['id'] == screen_id:
+                    self.config['screen'][i]['active'] = not current_status
+
+            self.save_config()
+            self.populate_page_settings_gbox_screen()
+
+            self.show_toast(Toast.Success, "Display status changed successful!")
+            pass
+
+        global_pos = self.ui.tableWidget_gbox_screen.viewport().mapToGlobal(pos)
+
+        item = self.ui.tableWidget_gbox_screen.itemAt(pos)
+        if not item:
+            return
+        
+        screens = self.config['screen'].copy()
+        screen_id = self.ui.tableWidget_gbox_screen.item(item.row(), 0).data(Qt.DisplayRole)
+
+        current_status = False
+        for scr in screens:
+            if scr['id'] == screen_id:
+                current_status = scr['active']
+
+        menu = QMenu(self)
+
+        action_toggle_active_status = QAction("Change Status", self, icon=QIcon(":/icons/icon-toggle-on.png") if current_status else QIcon(":/icons/icon-toggle-off.png"))
+
+        menu.addAction(action_toggle_active_status)
+
+        action_toggle_active_status.triggered.connect(lambda: control_toggle_active_status(item))
+
+        menu.exec(global_pos)
+        pass
+
+    """ PAGE - Settings - GBOX [Cache] """
+    def populate_page_settings_gbox_cache(self):
+        # LOAD
+        config_cache = self.config['cache']
+
+        # -- image
+        self.ui.spinBox_gbox_cache_image_files_count.setValue(config_cache['image']['max-files'])
+        self.ui.spinBox_gbox_cache_image_max_size.setValue(config_cache['image']['max-size'])
+
+        usage = self.calculate_disk_used(os.path.join(CACHE_FOLDER, "image"))
+        self.ui.label_gbox_cache_image_cache_info.setText(usage)
+
+        # -- video
+        self.ui.spinBox_gbox_cache_video_files_count.setValue(config_cache['video']['max-files'])
+        self.ui.spinBox_gbox_cache_video_max_size.setValue(config_cache['video']['max-size'])
+
+        usage = self.calculate_disk_used(os.path.join(CACHE_FOLDER, "video"))
+        self.ui.label_gbox_cache_video_cache_info.setText(usage)
+        
+        self.changed_spinBox_gbox_cache_image_files_count()
+        self.changed_spinBox_gbox_cache_image_max_size()
+
+        self.changed_spinBox_gbox_cache_video_files_count()
+        self.changed_spinBox_gbox_cache_video_max_size()
+
+        self.toggle_gbox_cache_image_toggle(reset=True)
+        self.toggle_gbox_cache_video_toggle(reset=True)
+        pass
+
+    @Slot()
+    def toggle_gbox_cache_image_toggle(self, reset=False):
+        if not hasattr(self, "toggle_state_cache_image"):
+            self.toggle_state_cache_image = True
+
+        if reset:
+            self.toggle_state_cache_image = True
+        
+        icon = QIcon(":/icons/icon-pen.png") if self.toggle_state_cache_image else QIcon(":/icons/icon-check.png")
+        
+        self.toggle_state_cache_image = not self.toggle_state_cache_image
+
+        self.ui.pushButton_gbox_cache_image_toggle.setIcon(icon)
+
+        self.ui.spinBox_gbox_cache_image_files_count.setEnabled(self.toggle_state_cache_image)
+        self.ui.spinBox_gbox_cache_image_max_size.setEnabled(self.toggle_state_cache_image)
+        pass
+
+    @Slot()
+    def changed_spinBox_gbox_cache_image_files_count(self, value:int=None):
+        value = self.get_value_spinbox_and_color(
+            self.ui.spinBox_gbox_cache_image_files_count, 
+            self.ui.label_gbox_cache_image_color_files_count
+        )
+
+        self.config['cache']['image']['max-files'] = value
+        self.save_config()
+        pass
+
+    @Slot()
+    def changed_spinBox_gbox_cache_image_max_size(self, value:int=None):
+        value = self.get_value_spinbox_and_color(
+            self.ui.spinBox_gbox_cache_image_max_size, 
+            self.ui.label_gbox_cache_image_color_max_size
+        )
+
+        self.config['cache']['image']['max-size'] = value
+        self.save_config()
+        pass
+
+    @Slot()
+    def clicked_pushButton_gbox_cache_image_clear_cache(self):
+        self.clear_cache("image")
+        self.populate_page_settings_gbox_cache()
+        pass
+
+    @Slot()
+    def toggle_gbox_cache_video_toggle(self, reset=False):
+        if not hasattr(self, "toggle_state_cache_video"):
+            self.toggle_state_cache_video = True
+        
+        if reset:
+            self.toggle_state_cache_video = True
+        
+        icon = QIcon(":/icons/icon-pen.png") if self.toggle_state_cache_video else QIcon(":/icons/icon-check.png")
+        
+        self.toggle_state_cache_video = not self.toggle_state_cache_video
+
+        self.ui.pushButton_gbox_cache_video_toggle.setIcon(icon)
+
+        self.ui.spinBox_gbox_cache_video_files_count.setEnabled(self.toggle_state_cache_video)
+        self.ui.spinBox_gbox_cache_video_max_size.setEnabled(self.toggle_state_cache_video)
+        pass
+
+    @Slot()
+    def changed_spinBox_gbox_cache_video_files_count(self, value:int=None):
+        value = self.get_value_spinbox_and_color(
+            self.ui.spinBox_gbox_cache_video_files_count, 
+            self.ui.label_gbox_cache_video_color_files_count
+        )
+
+        self.config['cache']['video']['max-files'] = value
+        self.save_config()
+        pass
+
+    @Slot()
+    def changed_spinBox_gbox_cache_video_max_size(self, value:int=None):
+        value = self.get_value_spinbox_and_color(
+            self.ui.spinBox_gbox_cache_video_max_size, 
+            self.ui.label_gbox_cache_video_color_max_size
+        )
+
+        self.config['cache']['video']['max-size'] = value
+        self.save_config()
+        pass
+
+    @Slot()
+    def clicked_pushButton_gbox_cache_video_clear_cache(self):
+        self.clear_cache("video")
+        self.populate_page_settings_gbox_cache()
+        pass
+
     """ FILE METHODS """
-    @staticmethod
-    def init_config():
+    def init_config(self):
         data = {
+            "app": {
+                "location": "Store Wall",
+            },
             "network": {
                 "profiles": [],
                 "config": {
-                    "retries": 2,
-                    "timeout": 30
+                    "retries": self.ui.spinBox_gbox_network_config_reconnect_retries.minimum(),
+                    "timeout": self.ui.spinBox_gbox_network_config_timeout.minimum()
                 }
             },
             "screen": [],
             "cache": {
-                "image": [],
-                "video": []
+                "image": {
+                    "max-files": self.ui.spinBox_gbox_cache_image_files_count.minimum(),
+                    "max-size": self.ui.spinBox_gbox_cache_image_max_size.minimum(),
+                    "files": []
+                },
+                "video": {
+                    "max-files": self.ui.spinBox_gbox_cache_video_files_count.minimum(),
+                    "max-size": self.ui.spinBox_gbox_cache_video_max_size.minimum(),
+                    "files": []
+                }
             }
         }
         
@@ -594,7 +869,45 @@ class MainWindow(QMainWindow):
             print(repr(e))
         pass
 
+    def clear_cache(self, source:str):
+        path = os.path.join(CACHE_FOLDER, source)
+        files = [os.path.join(path, x) for x in os.listdir(path)]
+
+        deleted = []
+        for f in files:
+            try:
+                os.remove(f)
+                deleted.append(f)
+            except Exception as e:
+                print(repr(e))
+
+        self.show_toast(Toast.Info, "Clear cache {}.<br>{} files deleted!".format(source, len(deleted)))
+        pass
+
     """ SETTINGS METHODS """
+    def get_value_spinbox_and_color(self, spinBox:QSpinBox, label:QLabel) -> int:
+        value = spinBox.value()
+        xmin = spinBox.minimum()
+        xmax = spinBox.maximum()
+
+        hexcol = self.gradient_color(value, xmin, xmax)
+        label.setStyleSheet("QLabel { background-color: %s; }" % hexcol)
+
+        return value
+
+    @staticmethod
+    def calculate_disk_used(path:str):
+        files = []
+        size = 0
+
+        if not os.path.exists(path):
+            os.makedirs(path, exist_ok=False)
+        
+        files = [os.path.join(path, x) for x in os.listdir(path)]
+        size = sum([os.path.getsize(x) for x in files])/1024/1024
+        
+        return "<b>{} files</b> with a total size of <b>{:.2f} MB</b>  ".format(len(files), size)
+
     @staticmethod
     def generate_unique_id():
         return str(uuid.uuid4())
