@@ -7,8 +7,9 @@ import time
 import uuid
 
 import requests
-from PySide6.QtCore import (QEasingCurve, QPoint, QPropertyAnimation, QTimer, QSize,
-                            QUrl, Slot)
+import socketio
+from PySide6.QtCore import (QEasingCurve, QPoint, QPropertyAnimation, QSize, QThread, Signal, QObject,
+                            QTimer, QUrl, Slot)
 from PySide6.QtGui import QAction, QIcon, QKeyEvent, QPixmap, Qt
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (QApplication, QGraphicsOpacityEffect,
@@ -16,9 +17,10 @@ from PySide6.QtWidgets import (QApplication, QGraphicsOpacityEffect,
                                QSpinBox, QTableWidgetItem, QVBoxLayout,
                                QWidget)
 
+import resources_rc
 from ui.ui_MainWindow import Ui_MainWindow
 
-import resources_rc
+sio = socketio.Client()
 
 is_frozen = getattr(sys, 'frozen', False)
 
@@ -32,6 +34,104 @@ CONFIG_FILE = os.path.join(WORK_PATH, "config/config.json")
 CACHE_FOLDER = os.path.join(WORK_PATH, "cache")
 HTML_FILE = os.path.join(WORK_PATH, "html")
 
+# --- SocketIO ---
+@sio.on("connect")
+def socket_connect():
+    print('[SIO] Connected!')
+    sio.emit("client_message", {"text": "hello world!"})
+    pass
+
+@sio.on("disconnect")
+def socket_disconnect():
+    print("[SIO] Disconnected!")
+    pass
+
+@sio.on("server_message")
+def socket_server_message(data):
+    print("[SIO/Server] MSG: ", data['text'])
+    pass
+
+
+# --- QThread ---
+class SocketWorker(QObject):
+    connected = Signal()
+    disconnected = Signal()
+    commandReceived = Signal(dict)
+    statusUpdate = Signal(str)
+
+    def __init__(self):
+        super().__init__()
+        self.server_url = None
+        self.client_id = None
+        self.screens = []
+        self.location = None
+        self._running = False
+
+        self.sio = socketio.Client(reconnection=False)
+
+        @self.sio.on('connect')
+        def on_connect():
+            self.statusUpdate.emit(f"Connected to {self.server_url}")
+            self.connected.emit()
+
+            if self.client_id:
+                self.sio.emit('register', {'id': self.client_id, "location": self.location, "screens": self.screens})
+            pass
+
+        @self.sio.on('disconnect')
+        def on_disconnect():
+            self.statusUpdate.emit("Disconnected from server.")
+            self.disconnected.emit()
+
+        @self.sio.on('server_command')
+        def on_command(data):
+            self.commandReceived.emit(data)
+
+    def run(self):
+        self._running = True
+        while self._running:
+            try:
+                if not self.server_url:
+                    time.sleep(3)
+                    continue
+
+                if not self.sio.connected:
+                    self.sio.connect(self.server_url, wait_timeout=10)
+
+                self.sio.wait()
+            except Exception as e:
+                self.statusUpdate.emit(f"Connection error: {e}")
+                time.sleep(5)
+
+    @Slot(dict)
+    def connect_to_server(self, data:dict):
+        self.server_url = data['url']
+        self.client_id = data['id']
+        self.location = data['location']
+        self.screens = data.get('screens', [])
+        pass
+
+    @Slot(str)
+    def send_status(self, msg):
+        if self.sio.connected:
+            self.sio.emit('client_status', {'id': self.client_id, 'msg': msg})
+        else:
+            self.statusUpdate.emit("Cannot send status: not connected!")
+        pass
+
+    def stop(self):
+        self._running = False
+
+        try:
+            if self.sio.connected:
+                self.sio.disconnect()
+        except Exception:
+            pass
+
+        self.statusUpdate.emit("Socket worker stopped.")
+        pass
+
+# --- UI ---
 class Toast(QWidget):
     Error = "#ff0000"
     Success = "#00ff95"
@@ -173,6 +273,17 @@ class MainWindow(QMainWindow):
         self.ui.spinBox_gbox_cache_video_max_size.valueChanged.connect(self.changed_spinBox_gbox_cache_video_max_size)
         self.ui.pushButton_gbox_cache_video_clear_cache.clicked.connect(self.clicked_pushButton_gbox_cache_video_clear_cache)
 
+        # Socket Control + Thread
+        self.socket_thread = QThread()
+        self.socket_worker = SocketWorker()
+        self.socket_worker.moveToThread(self.socket_thread)
+
+        self.socket_worker.connected.connect(lambda: print("Socket Connected!"))
+        self.socket_worker.commandReceived.connect(self.processCommand)
+        self.socket_worker.statusUpdate.connect(self.processStatus)
+        self.socket_thread.started.connect(self.socket_worker.run)
+        self.socket_thread.start()
+
         # Vars
         self.config:dict = None
 
@@ -182,10 +293,9 @@ class MainWindow(QMainWindow):
         QTimer.singleShot(1000, self.load_ui_icons_async)
 
         self.load_config()
-        self.connect_page(firstrun=True)
-        # self.open_child_widget()
+        self.init_webView()
 
-        QTimer.singleShot(5000, self.connect_page)
+        QTimer.singleShot(5000, self.connect_socket)
 
         # Debug
         # self.clicked_pushButton_menu_settings()
@@ -193,67 +303,58 @@ class MainWindow(QMainWindow):
 
     """ CONTROL APP """
     @Slot()
-    def connect_page(self, url:str=None, firstrun=False):
-        network = self.config.get("network", None)
+    def init_webView(self):
+        file_path = os.path.join(HTML_FILE, "default.html")
 
-        missconfigured = False
-        if network is None:
-            missconfigured = True
+        if not os.path.exists(file_path):
+            self.ui.webEngineView.setHtml("<h1 style='text-align:center'>Please reinstall the app!</h1>")
+            return
+        
+        self.ui.webEngineView.setUrl(QUrl.fromLocalFile(file_path))
+        pass
 
-        elif not len(network.get("profiles", [])):
-            missconfigured = True
-
-        if firstrun:
-            missconfigured = True
-            url = None
-
-        if missconfigured and url is None:
-            file_path = os.path.join(HTML_FILE, "default.html")
-
-            if not os.path.exists(file_path):
-                self.ui.webEngineView.setHtml("<h1>Please reinstall the app!</h1>")
+    @Slot()
+    def connect_socket(self, url:str=None):
+        if url is None:
+            network = self.config.get('network', None)
+            if network is None:
+                self.show_toast(Toast.Error, "Please config network profiles!")
                 return
 
-            self.ui.webEngineView.setUrl(QUrl.fromLocalFile(file_path))
-        
-        elif url is not None:
-            try:
-                res = requests.get(url, timeout=network['config']['timeout'])
+            profiles = network.get("profiles", [])
+            if not profiles:
+                self.show_toast(Toast.Error, "No profile was found!")
+                return
+            
+            network_config = network.get("config", None)
+            retries = network_config['retries'] if network_config else self.ui.spinBox_gbox_network_config_reconnect_retries.minimum()
+            timeout = network_config['timeout'] if network_config else self.ui.spinBox_gbox_network_config_timeout.minimum()
 
-                if res.status_code == 200:
-                    self.ui.webEngineView.setUrl(QUrl(url))
+            for net in profiles:
+                tries = 0
+                while tries < retries:
+                    self.show_toast(Toast.Info, f"Connect to {net['name']}")
 
-                    self.show_toast(Toast.Success, "Connected Successful!")
-                else:
-                    self.show_toast(Toast.Error, "Timeout! Try again...")
-            except Exception as e:
-                self.show_toast(Toast.Error, "Incorrect Host URL!")
-                print(repr(e))
-        else:
-            profiles = network['profiles']
-            connected = False
+                    res = requests.get(net['host'], timeout=timeout)
+                    if res.status_code == 200:
+                        url = net['host']
+                        break
+                    else:
+                        self.show_toast(Toast.Error, "Timeout... Try to reconnect!")
 
-            for profile in profiles:
-                retries = 0
-                
-                self.show_toast(Toast.Info, "Connect Profile: "+profile['name'])
-                while retries < network['config']['retries']:
-                    try:
-                        res = requests.get(profile["host"], timeout=network['config']['timeout'])
+                    tries += 1
 
-                        if res.status_code == 200:
-                            self.ui.webEngineView.setUrl(QUrl(profile['host']))
-                            self.show_toast(Toast.Success, "Connected!")
-                            connected = True
-                            break
-                    except Exception as e:
-                        print(repr(e))
+            if url is None:
+                return
 
-                    retries += 1
-                    self.show_toast(Toast.Error, "Timeout. Try again...")
-                
-            if not connected:
-                self.show_toast(Toast.Warning, "Fall to default! During failed connection!")
+        data = {
+            "id": self.config["app"]["device_uuid"],
+            "url": url,
+            "location": self.config['app']['location'],
+            "screens": self.config['screen']
+        }
+
+        self.socket_worker.connect_to_server(data)
         pass
 
     def keyPressEvent(self, event: QKeyEvent):
@@ -526,7 +627,7 @@ class MainWindow(QMainWindow):
 
             for i, profile in enumerate(profiles):
                 if profile['id'] == profile_id:
-                    self.connect_page(url=profile['host'])
+                    self.connect_socket(url=profile['host'])
                     break
             
             pass
@@ -817,6 +918,7 @@ class MainWindow(QMainWindow):
         data = {
             "app": {
                 "location": "Store Wall",
+                "device_uuid": self.generate_unique_id()
             },
             "network": {
                 "profiles": [],
@@ -946,6 +1048,28 @@ class MainWindow(QMainWindow):
     def show_toast(self, flag:str, message:str, duration:int=3):
         toast = Toast(self, message, flag, duration*1000)
         toast.show()
+        pass
+
+
+    """ SOCKET + THREAD """
+    @Slot(dict)
+    def processCommand(self, data:dict):
+        print(data)
+        pass
+
+    @Slot(str)
+    def processStatus(self, msg:str):
+        print("[SIO] Log:", msg)
+        pass
+
+
+    """ OVERRIDE """
+    def closeEvent(self, event):
+        self.socket_worker.stop()
+        self.socket_thread.quit()
+        self.socket_thread.wait()
+
+        event.accept()
         pass
 
 if __name__ == "__main__":

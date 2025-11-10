@@ -1,13 +1,14 @@
 {
     "app": {
-        "location": "Store Wall"
+        "location": "Store Wall",
+        "device_uuid": "4c4613f4-6b02-4374-8905-4b3a276f32a2"
     },
     "network": {
         "profiles": [
             {
-                "id": "4c4613f4-6b02-4374-8905-4b3a276f32a2",
-                "name": "Local Host",
-                "host": "http://127.0.0.1:8080",
+                "id": "9624a387-b02e-456b-a90a-6aa8e286c020",
+                "name": "LocalHost",
+                "host": "http://127.0.0.1:5000",
                 "priority": 0
             }
         ],
@@ -54,7 +55,7 @@
     ],
     "cache": {
         "image": {
-            "max-files": 250,
+            "max-files": 50,
             "max-size": 1024,
             "files": []
         },
