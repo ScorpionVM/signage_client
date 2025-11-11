@@ -19,9 +19,9 @@
     },
     "screen": [
         {
-            "id": "7bb3b390-1cf9-4c23-abb7-2c3fdc8cc8bb",
+            "id": "6ec9d582-d86b-4029-b64b-5fac1dfef42d",
             "pos": 0,
-            "name": "HDMI-1-0",
+            "name": "PHL 241V8 (2)",
             "active": true,
             "geometry": [
                 1920,
@@ -36,9 +36,9 @@
             "profile": null
         },
         {
-            "id": "7c1cd4af-620a-428b-b110-24aed99355a5",
+            "id": "4c3dff73-675a-4213-b971-ebe2e166f7c1",
             "pos": 1,
-            "name": "eDP-1",
+            "name": "PHL 241V8 (1)",
             "active": true,
             "geometry": [
                 1920,

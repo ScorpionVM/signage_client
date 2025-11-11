@@ -1,0 +1,8 @@
+@font-face {
+    font-family: "0xProto";
+    src: url("./static/fonts/0xProto-Regular.ttf");
+}
+
+* {
+    font-family: "0xProto";
+}

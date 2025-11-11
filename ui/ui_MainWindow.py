@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'app.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.10.0
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(893, 777)
-        MainWindow.setStyleSheet(u"QMainWindow { background-color: black; }")
+        MainWindow.setStyleSheet(u"QMainWindow { background-color: black; color: black; }")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.page_webview)
         self.page_menu = QWidget()
         self.page_menu.setObjectName(u"page_menu")
-        self.page_menu.setStyleSheet(u"QWidget { background-color: white; }")
+        self.page_menu.setStyleSheet(u"")
         self.verticalLayout_2 = QVBoxLayout(self.page_menu)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.gridLayout = QGridLayout()
@@ -132,7 +132,7 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.page_menu)
         self.page_settings = QWidget()
         self.page_settings.setObjectName(u"page_settings")
-        self.page_settings.setStyleSheet(u"QWidget { background-color: white; }")
+        self.page_settings.setStyleSheet(u"")
         self.verticalLayout_4 = QVBoxLayout(self.page_settings)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.horizontalLayout_2 = QHBoxLayout()
@@ -166,7 +166,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 859, 1446))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 861, 1330))
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.groupBox_4 = QGroupBox(self.scrollAreaWidgetContents)
@@ -697,7 +697,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 893, 23))
+        self.menubar.setGeometry(QRect(0, 0, 893, 33))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -705,7 +705,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

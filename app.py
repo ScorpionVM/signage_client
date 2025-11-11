@@ -8,9 +8,9 @@ import uuid
 
 import requests
 import socketio
-from PySide6.QtCore import (QEasingCurve, QPoint, QPropertyAnimation, QSize, QThread, Signal, QObject,
-                            QTimer, QUrl, Slot)
-from PySide6.QtGui import QAction, QIcon, QKeyEvent, QPixmap, Qt
+from PySide6.QtCore import (QEasingCurve, QObject, QPoint, QPropertyAnimation,
+                            QSize, QThread, QTimer, QUrl, Signal, Slot)
+from PySide6.QtGui import QAction, QIcon, QKeyEvent, QPixmap, Qt, QFont, QFontDatabase
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (QApplication, QGraphicsOpacityEffect,
                                QHBoxLayout, QLabel, QMainWindow, QMenu,
@@ -20,12 +20,12 @@ from PySide6.QtWidgets import (QApplication, QGraphicsOpacityEffect,
 import resources_rc
 from ui.ui_MainWindow import Ui_MainWindow
 
-sio = socketio.Client()
-
 is_frozen = getattr(sys, 'frozen', False)
 
 WORK_PATH = "./_internal/local" if is_frozen else "./local"
 WORK_PATH = os.path.abspath(WORK_PATH)
+
+font = QFont("0xProto-Regular", 11)
 
 if not os.path.exists(WORK_PATH):
     os.makedirs(WORK_PATH, exist_ok=False)
@@ -33,24 +33,6 @@ if not os.path.exists(WORK_PATH):
 CONFIG_FILE = os.path.join(WORK_PATH, "config/config.json")
 CACHE_FOLDER = os.path.join(WORK_PATH, "cache")
 HTML_FILE = os.path.join(WORK_PATH, "html")
-
-# --- SocketIO ---
-@sio.on("connect")
-def socket_connect():
-    print('[SIO] Connected!')
-    sio.emit("client_message", {"text": "hello world!"})
-    pass
-
-@sio.on("disconnect")
-def socket_disconnect():
-    print("[SIO] Disconnected!")
-    pass
-
-@sio.on("server_message")
-def socket_server_message(data):
-    print("[SIO/Server] MSG: ", data['text'])
-    pass
-
 
 # --- QThread ---
 class SocketWorker(QObject):
@@ -143,7 +125,7 @@ class Toast(QWidget):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.ToolTip)
         # self.setAttribute(Qt.WA_TranslucentBackground)
         
-        self.setStyleSheet("QWidget { background-color: white; }")
+        self.setStyleSheet("QWidget { background-color: white; color: black; }")
 
         self.last_toast:Toast = None
         self.active:bool = True
@@ -165,6 +147,8 @@ class Toast(QWidget):
         self.label.setWordWrap(True)
         self.label.setMinimumWidth(200)
         self.label.setMaximumWidth(300)
+
+        self.label.setFont(font)
         layout.addWidget(self.label)
         
         self.setLayout(layout)
@@ -236,7 +220,9 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.setWindowTitle("Browser PySide6")
+        self.setWindowTitle("Signange")
+
+        self.setFont(font)
 
         # Connect
         # --- Menu ---
@@ -335,12 +321,19 @@ class MainWindow(QMainWindow):
                 while tries < retries:
                     self.show_toast(Toast.Info, f"Connect to {net['name']}")
 
-                    res = requests.get(net['host'], timeout=timeout)
-                    if res.status_code == 200:
-                        url = net['host']
-                        break
-                    else:
-                        self.show_toast(Toast.Error, "Timeout... Try to reconnect!")
+                    try:
+                        res = requests.get(net['host'], timeout=timeout)
+                        if res.status_code == 200:
+                            url = net['host']
+                            break
+                        else:
+                            self.show_toast(Toast.Error, "Timeout... Try to reconnect!")
+                    except requests.exceptions.ConnectionError:
+                        self.show_toast(Toast.Error, "Connection error... Try to reconnect!")
+                    
+                    except requests.exceptions.Timeout:
+                        self.show_toast(Toast.Error, "Timeout error... Try to reconnect!")
+
 
                     tries += 1
 
@@ -1061,7 +1054,6 @@ class MainWindow(QMainWindow):
     def processStatus(self, msg:str):
         print("[SIO] Log:", msg)
         pass
-
 
     """ OVERRIDE """
     def closeEvent(self, event):
